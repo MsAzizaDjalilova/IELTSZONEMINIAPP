@@ -2,6 +2,27 @@ require('dotenv').config();
 
 const env = process.env;
 
+// Hosting panellariga nusxalashda qo'shilib qoladigan ortiqcha belgilarni tozalash:
+// bo'sh joy/yangi qator, qo'shtirnoq, "DATABASE_URL=" prefiksi, psql '...' o'rami.
+function cleanDbUrl(key) {
+  let v = env[key];
+  if (!v) return;
+  v = v.trim().replace(new RegExp(`^${key}\\s*=\\s*`), '').trim();
+  v = v.replace(/^psql\s+/, '').replace(/^['"]+|['"]+$/g, '').replace(/\s+/g, '');
+  env[key] = v;
+}
+cleanDbUrl('DATABASE_URL');
+cleanDbUrl('DIRECT_URL');
+if (env.RENDER) {
+  const u = env.DATABASE_URL || '';
+  const m = u.match(/^(postgres(?:ql)?):\/\/([^:@/]+):[^@]*@([^/?]+)\/([^?]+)/);
+  console.log(
+    m
+      ? `ℹ️  DATABASE_URL: ${m[1]}://${m[2]}:***@${m[3]}/${m[4]} (uzunligi ${u.length})`
+      : `⚠️  DATABASE_URL formati noto‘g‘ri. Boshlanishi: "${u.slice(0, 14)}", uzunligi ${u.length}`
+  );
+}
+
 const IMG = 'https://zone-storage.fra1.cdn.digitaloceanspaces.com/zone-storage';
 
 module.exports = {
