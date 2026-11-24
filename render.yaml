@@ -5,7 +5,7 @@ services:
     runtime: node
     region: ohio  # Neon bazasi us-east-2 (Ohio) da — eng tez
     plan: free
-    buildCommand: npm install && npx prisma generate && npx prisma db push --skip-generate
+    buildCommand: npm install && npm run build
     startCommand: node src/index.js
     healthCheckPath: /api/health
     envVars:
