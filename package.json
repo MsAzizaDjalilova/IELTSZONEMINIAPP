@@ -1,0 +1,33 @@
+{
+  "name": "ieltszone-telegram-miniapp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "IELTS ZONE: Telegram bot + Mini App + Admin Panel",
+  "main": "src/index.js",
+  "scripts": {
+    "setup": "npm install && npm install --prefix miniapp && npm install --prefix admin && npm run db:push && npm run seed && npm run build",
+    "postinstall": "prisma generate",
+    "db:push": "prisma db push",
+    "seed": "node prisma/seed.js",
+    "build": "npm run build --prefix miniapp && npm run build --prefix admin",
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "dev:miniapp": "npm run dev --prefix miniapp",
+    "dev:admin": "npm run dev --prefix admin",
+    "build:web": "node scripts/build-web.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "grammy": "^1.30.0",
+    "prisma": "^6.1.0"
+  }
+}

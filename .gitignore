@@ -1,0 +1,35 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+miniapp/node_modules/
+admin/node_modules/
+
+# Builds
+dist/
+build/
+miniapp/dist/
+admin/dist/
+
+# Logs
+*.log
+npm-debug.log*
+logs/
+
+# ngrok
+ngrok.yml
+ngrok.exe
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Vercel build
+web-dist/
+.vercel/

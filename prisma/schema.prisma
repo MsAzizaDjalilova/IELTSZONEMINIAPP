@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Telegram foydalanuvchisi (mijoz)
+model User {
+  id         Int      @id @default(autoincrement())
+  telegramId String   @unique
+  firstName  String?
+  lastName   String?
+  username   String?
+  phone      String?
+  language   String   @default("uz")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  leads      Lead[]
+}
+
+// Kurs (title/description/outcome/duration/features: { uz, ru, en })
+model Course {
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique
+  category    String // IELTS | GENERAL | CEFR | SAT | KIDS | TOEFL
+  title       Json
+  description Json
+  outcome     Json
+  duration    Json
+  features    Json
+  imageUrl    String?
+  oldPrice    Int?
+  newPrice    Int?
+  formats     String[] // integro | amir-temur | drujba | online
+  seatsLeft   Int?
+  nextStart   DateTime?
+  featured    Boolean   @default(false)
+  isActive    Boolean   @default(true)
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  leads       Lead[]
+}
+
+// Yozilish / savol so'rovi
+model Lead {
+  id          Int      @id @default(autoincrement())
+  userId      Int?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  courseId    Int?
+  course      Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  courseTitle String?
+  name        String
+  contact     String
+  branch      String?
+  type        String   @default("ENROLL") // ENROLL | QUESTION
+  message     String?
+  answers     Json?
+  status      String   @default("NEW") // NEW | CONTACTED | ENROLLED | CANCELLED
+  language    String   @default("uz")
+  source      String   @default("miniapp")
+  adminNote   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status, createdAt])
+}
