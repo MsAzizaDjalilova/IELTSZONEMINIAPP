@@ -7,8 +7,9 @@ const env = process.env;
 function cleanDbUrl(key) {
   let v = env[key];
   if (!v) return;
-  v = v.trim().replace(new RegExp(`^${key}\\s*=\\s*`), '').trim();
-  v = v.replace(/^psql\s+/, '').replace(/^['"]+|['"]+$/g, '').replace(/\s+/g, '');
+  const unquote = (s) => s.trim().replace(/^['"]+|['"]+$/g, '').trim();
+  v = unquote(v).replace(new RegExp(`^${key}\\s*=\\s*`), '');
+  v = unquote(unquote(v).replace(/^psql\s+/, '')).replace(/\s+/g, '');
   env[key] = v;
 }
 cleanDbUrl('DATABASE_URL');
