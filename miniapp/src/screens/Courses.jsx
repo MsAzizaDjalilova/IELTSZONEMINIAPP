@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import CourseCard from '../components/CourseCard.jsx';
 import { MainButton } from '../components/ui.jsx';
 import { haptic } from '../telegram.js';
+import { useRevealAll } from '../components/anim.jsx';
 
 const CATS = ['ALL', 'IELTS', 'GENERAL', 'CEFR', 'SAT', 'KIDS', 'TOEFL'];
 
@@ -19,8 +20,10 @@ export default function Courses(props) {
     return true;
   });
 
+  const rootRef = useRevealAll([cat, fmt, list.length]);
+
   return (
-    <div className="stack">
+    <div className="stack" ref={rootRef}>
       <div className="chips-scroll">
         {available.map((c) => (
           <button
@@ -54,8 +57,14 @@ export default function Courses(props) {
         ))}
       </div>
 
-      {list.map((course) => (
-        <CourseCard key={course.id} course={course} {...props} />
+      {list.map((course, i) => (
+        <div
+          className={`side-wrap reveal ${i % 2 ? 'from-right' : ''}`}
+          style={{ '--i': Math.min(i, 3) }}
+          key={`${cat}-${fmt}-${course.id}`}
+        >
+          <CourseCard course={course} {...props} />
+        </div>
       ))}
       {!list.length && <p className="hint center">—</p>}
 

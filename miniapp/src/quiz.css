@@ -442,3 +442,123 @@
   opacity: 1;
   transform: none;
 }
+
+/* =========================================================
+   KURSLAR — kartalar yon tomondan kirib keladi
+   (chapdan / o'ngdan navbatma-navbat)
+   ========================================================= */
+html,
+body {
+  overflow-x: clip;
+}
+.side-wrap.reveal {
+  opacity: 1;
+  transform: none;
+}
+.side-wrap > .course-card {
+  opacity: 0;
+  transform: translateX(-110%) rotate(-3deg);
+  transition:
+    opacity 0.45s ease calc(var(--i, 0) * 120ms),
+    transform 0.8s cubic-bezier(0.2, 0.9, 0.25, 1.12) calc(var(--i, 0) * 120ms),
+    translate 0.35s cubic-bezier(0.3, 1.5, 0.5, 1),
+    scale 0.35s cubic-bezier(0.3, 1.5, 0.5, 1),
+    box-shadow 0.35s ease,
+    border-color 0.25s ease;
+}
+.side-wrap.from-right > .course-card {
+  transform: translateX(110%) rotate(3deg);
+}
+.side-wrap.in > .course-card {
+  opacity: 1;
+  transform: none;
+}
+
+/* =========================================================
+   HOVER — kursor ustiga kelganda kartalar bo'rtib chiqadi
+   (translate/scale ishlatiladi — kirish animatsiyasiga xalal bermaydi)
+   ========================================================= */
+.qopt {
+  transition: background 0.2s, border-color 0.2s, opacity 0.2s, box-shadow 0.3s ease,
+    translate 0.35s cubic-bezier(0.3, 1.5, 0.5, 1), scale 0.35s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+.free-strip.reveal,
+.ask-card.reveal,
+.branch-card.reveal,
+.score-card.reveal,
+.period.reveal {
+  transition:
+    opacity 0.6s ease calc(var(--i, 0) * 90ms),
+    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i, 0) * 90ms),
+    translate 0.35s cubic-bezier(0.3, 1.5, 0.5, 1),
+    scale 0.35s cubic-bezier(0.3, 1.5, 0.5, 1),
+    box-shadow 0.35s ease;
+}
+.why-tile.slidein {
+  transition:
+    opacity 0.4s ease calc(var(--i) * 150ms),
+    transform 0.85s cubic-bezier(0.2, 0.9, 0.25, 1.12) calc(var(--i) * 150ms),
+    translate 0.35s cubic-bezier(0.3, 1.5, 0.5, 1),
+    scale 0.35s cubic-bezier(0.3, 1.5, 0.5, 1),
+    box-shadow 0.35s ease;
+}
+
+@media (hover: hover) {
+  .qopt:not(.picked):not(.dim):hover {
+    translate: 0 -4px;
+    scale: 1.04;
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(229, 230, 42, 0.75);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35), 0 0 22px rgba(229, 230, 42, 0.2);
+    z-index: 1;
+  }
+  .qopt:not(.picked):hover .qopt-icon {
+    transform: rotate(-10deg) scale(1.18);
+    background: rgba(229, 230, 42, 0.2);
+  }
+  .side-wrap.in > .course-card:hover {
+    translate: 0 -6px;
+    scale: 1.015;
+    border-color: var(--accent);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.16), 0 0 0 1px var(--accent);
+  }
+  .why-grid.in .why-tile.slidein:hover,
+  .branch-card.in:hover,
+  .score-card.in:hover,
+  .period.in:hover,
+  .free-strip.in:hover,
+  .ask-card.in:hover {
+    translate: 0 -5px;
+    scale: 1.03;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.16);
+  }
+  .why-grid.in .why-tile.slidein:hover .why-icon {
+    animation: iconWiggle 0.6s ease;
+  }
+}
+@keyframes iconWiggle {
+  25% { transform: rotate(-12deg) scale(1.15); }
+  50% { transform: rotate(10deg) scale(1.15); }
+  75% { transform: rotate(-6deg) scale(1.1); }
+}
+.side-wrap.in > .course-card:active,
+.branch-card.in:active,
+.free-strip.in:active {
+  scale: 0.97;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .side-wrap > .course-card {
+    opacity: 1;
+    transform: none;
+  }
+  .qopt:hover,
+  .course-card:hover,
+  .why-tile:hover,
+  .branch-card:hover,
+  .score-card:hover,
+  .period:hover {
+    translate: none !important;
+    scale: none !important;
+  }
+}
