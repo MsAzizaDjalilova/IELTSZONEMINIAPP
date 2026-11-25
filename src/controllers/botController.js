@@ -124,6 +124,34 @@ async function sendLeadConfirmation(telegramId, lang, lead) {
   await bot.api.sendMessage(telegramId, text, { parse_mode: 'HTML' });
 }
 
+// Yangi ariza haqida administrator(lar)ga xabar (ADMIN_CHAT_IDS)
+async function notifyAdmins(lead, extra = {}) {
+  if (!bot || !config.adminChatIds.length) return;
+  const isQ = lead.type === 'QUESTION';
+  const lines = [
+    isQ ? `❓ <b>Yangi savol</b> (#${lead.id})` : `🆕 <b>Yangi ariza</b> (#${lead.id})`,
+    '',
+    `👤 ${esc(lead.name)}`,
+    `📞 ${esc(lead.contact)}`,
+  ];
+  if (extra.username) lines.push(`💬 @${esc(extra.username)}`);
+  if (lead.courseTitle) lines.push(`📚 ${esc(lead.courseTitle)}`);
+  if (extra.branchName) lines.push(`📍 ${esc(extra.branchName)}`);
+  if (lead.message) lines.push('', `✉️ ${esc(lead.message)}`);
+  if (lead.answers && Object.keys(lead.answers).length) {
+    lines.push('', `🎯 ${Object.entries(lead.answers).map(([k, v]) => `${esc(k)}: ${esc(v)}`).join(', ')}`);
+  }
+  lines.push('', `🌐 ${lead.language?.toUpperCase() || 'UZ'} · ${lead.source === 'telegram' ? 'Telegram' : 'Web'}`);
+  const kb = config.webAppUrl ? new InlineKeyboard().url('Admin Panel', `${config.webAppUrl}/admin`) : undefined;
+  await Promise.all(
+    config.adminChatIds.map((id) =>
+      bot.api
+        .sendMessage(id, lines.join('\n'), { parse_mode: 'HTML', reply_markup: kb, link_preview_options: { is_disabled: true } })
+        .catch((e) => console.warn(`Admin ${id} ga xabar ketmadi:`, e.description || e.message))
+    )
+  );
+}
+
 function formatPrice(n, lang) {
   if (!n) return t(lang).priceAsk;
   return `${n.toLocaleString('ru-RU').replace(/ /g, ' ')} ${t(lang).perMonth}`;
@@ -168,6 +196,7 @@ module.exports = {
   handleContact,
   handleFallback,
   sendLeadConfirmation,
+  notifyAdmins,
   sendSavedCourse,
   setupBotUi,
 };

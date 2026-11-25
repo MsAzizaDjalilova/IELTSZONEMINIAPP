@@ -87,6 +87,10 @@ async function createLead(req, res) {
       .catch((e) => console.warn('Tasdiq xabari yuborilmadi:', e.description || e.message));
   }
 
+  botController
+    .notifyAdmins(lead, { branchName: branchDef?.name?.uz, username: req.tgUser?.username })
+    .catch((e) => console.warn('Adminga xabar yuborilmadi:', e.description || e.message));
+
   res.status(201).json({ ok: true, id: lead.id });
 }
 

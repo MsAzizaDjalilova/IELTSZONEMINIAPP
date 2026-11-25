@@ -40,6 +40,8 @@ module.exports = {
   // Bo'lsa — bot webhook rejimida ishlaydi, bo'lmasa (localhost) — long polling.
   publicUrl: (env.PUBLIC_URL || env.RENDER_EXTERNAL_URL || '').trim().replace(/\/+$/, ''),
   adminPassword: env.ADMIN_PASSWORD || '12345',
+  // Yangi arizalar keladigan Telegram chat(lar): "111,222" yoki guruh "-100..."
+  adminChatIds: (env.ADMIN_CHAT_IDS || '').split(/[\s,;]+/).map((s) => s.trim()).filter((s) => /^-?\d+$/.test(s)),
   adminSecret: env.ADMIN_SECRET || env.BOT_TOKEN || 'ieltszone-local-secret',
   initDataMaxAgeSec: 7 * 24 * 3600,
   languages: ['uz', 'ru', 'en'],
