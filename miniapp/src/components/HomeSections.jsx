@@ -91,8 +91,10 @@ export function TeachersSection({ t, teachers }) {
         <h2 className="section-title flush">{t('teachersTitle')}</h2>
         <span className="hint small">{t('teachersSub')}</span>
       </div>
+      {/* reveal tashqi qutida: ichki klass (paused) o'zgarganda "in" o'chib ketmasligi uchun */}
+      <div className="reveal">
       <div
-        className={`marquee reveal ${still ? 'still' : ''} ${paused ? 'paused' : ''}`}
+        className={`marquee ${still ? 'still' : ''} ${paused ? 'paused' : ''}`}
         onTouchStart={() => setPaused(true)}
         onTouchEnd={() => setPaused(false)}
         onMouseEnter={() => setPaused(true)}
@@ -111,6 +113,7 @@ export function TeachersSection({ t, teachers }) {
             </figure>
           ))}
         </div>
+      </div>
       </div>
     </section>
   );
