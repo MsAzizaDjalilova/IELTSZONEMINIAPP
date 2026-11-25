@@ -9,8 +9,13 @@ function cleanDbUrl(key) {
   if (!v) return;
   const unquote = (s) => s.trim().replace(/^['"]+|['"]+$/g, '').trim();
   v = unquote(v).replace(new RegExp(`^${key}\\s*=\\s*`), '');
-  v = unquote(unquote(v).replace(/^psql\s+/, '')).replace(/\s+/g, '');
+  v = unquote(unquote(v).replace(/^psql\s+/, ''));
+  // Bir nechta qator yopishtirilgan bo'lsa — faqat birinchi qiymat olinadi
+  v = unquote(v.split(/\s+/)[0] || '');
   env[key] = v;
+}
+for (const k of ['BOT_TOKEN', 'BOT_USERNAME', 'ADMIN_PASSWORD', 'ADMIN_SECRET', 'WEBAPP_URL']) {
+  if (env[k]) env[k] = env[k].trim().replace(new RegExp(`^${k}\\s*=\\s*`), '').split(/\r?\n/)[0].trim().replace(/^['"]+|['"]+$/g, '');
 }
 cleanDbUrl('DATABASE_URL');
 cleanDbUrl('DIRECT_URL');
