@@ -132,7 +132,9 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  /* Hero balandligining o'rtasida (pastki chetga yopishmaydi) */
+  top: 50%;
+  translate: 0 -46%;
   aspect-ratio: 522 / 552;
   transform-style: preserve-3d;
   transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
