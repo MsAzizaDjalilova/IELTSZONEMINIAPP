@@ -493,13 +493,11 @@ html:not([data-scheme]) .progress div {
   border-color: rgba(234, 88, 12, 0.35);
   color: #fdba74;
 }
+/* Toifalar: sig'masa keyingi qatorga o'tadi (kompyuter Telegram'ida ham hammasi ko'rinadi) */
 .chips-scroll {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  overflow-x: auto;
-  margin: 0 -16px;
-  padding: 0 16px;
-  scrollbar-width: none;
 }
 .chips-scroll::-webkit-scrollbar {
   display: none;
